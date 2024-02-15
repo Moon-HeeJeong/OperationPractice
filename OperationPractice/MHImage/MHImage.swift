@@ -15,20 +15,16 @@ struct MHImage: View {
     var urlStr: String?
     
     var isUseIndicator: Bool = false
-    var isUseDefaultImage: Bool = false
-    var defaultImage: Image = Image(systemName: "photo")
+    var defaultImage: Image? = nil
     
-    public init(urlStr: String?, isUseIndicator: Bool = false, isUseDefaultImage: Bool = false, defaultImage: Image?){
+    public init(urlStr: String?, isUseIndicator: Bool = false, defaultImage: Image? = nil){
         
         let imageManager = ImageManager()
         _imageManager = StateObject(wrappedValue: imageManager)
         
         self.urlStr = urlStr
         self.isUseIndicator = isUseIndicator
-        self.isUseDefaultImage = isUseDefaultImage
-        if let defaultImage = defaultImage{
-            self.defaultImage = defaultImage
-        }
+        self.defaultImage = defaultImage
     }
     
     public var body: some View{
@@ -44,16 +40,16 @@ struct MHImage: View {
                 if let err = self.imageManager.error, (err as? ImageLoadingError) != .existOperation{
                     //에러
                     //디폴트 이미지
-                    if isUseDefaultImage{
+                    if let img = self.defaultImage{
                         Rectangle()
-                            .fill(Color.gray)
-                            .opacity(0.5)
+                            .fill(Color.clear)
+//                            .opacity(0.5)
                         
                         
                         let defaultImgHeight = geometry.size.height*0.8
                         let defaultImgWidth = defaultImgHeight*1.5
                         
-                        self.defaultImage
+                        img
                             .resizable()
                             .frame(width: defaultImgWidth, height: defaultImgHeight)
                             .opacity(0.5)
@@ -104,7 +100,7 @@ extension MHImage{
 }
 
 #Preview {
-    MHImage(urlStr: "https://cdn.littlefox.co.kr/phonicsworks/flashcard/image/card_front_alligator.jpg", isUseIndicator: true, isUseDefaultImage: true, defaultImage: Image(systemName: "photo"))
+    MHImage(urlStr: "https://cdn.littlefox.co.kr/phonicsworks/flashcard/image/card_front_alligator.jpg", isUseIndicator: true, defaultImage: Image(systemName: "photo"))
 //        .setOptions(isUseIndicator: true, isUseDefaultImage: true)
 //        .onIndicator()
 //        .onDefaultImage(image: Image(systemName: "photo"))

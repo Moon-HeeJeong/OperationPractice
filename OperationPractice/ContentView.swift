@@ -20,7 +20,7 @@ struct ContentView: View {
             ForEach(viewModel.urlStrs, id: \.self){ value in
                 HStack(content: {
                     
-                    MHImage(urlStr: value, isUseIndicator: true, isUseDefaultImage: true, defaultImage: nil)
+                    MHImage(urlStr: value, isUseIndicator: true, defaultImage: Image(systemName: "photo"))
 //                        .setOptions(isUseIndicator: true, isUseDefaultImage: true)
                 })
             }
